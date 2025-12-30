@@ -17,7 +17,6 @@ import AboutModal from '@/components/AboutModal';
 import Footer from '@/components/Footer';
 import MobileNav from '@/components/MobileNav';
 import InstallBanner from '@/components/InstallBanner';
-import NotificationManager from '@/components/NotificationManager';
 import { EmailShare } from '@/components/EmailShare';
 import { CopyLinkButton } from '@/components/CopyLinkButton';
 import PrintSizePreview from '@/components/PrintSizePreview';
@@ -341,7 +340,6 @@ export default function Index() {
           </nav>
           <div className="flex items-center gap-2">
             <PWAInstallButton />
-            <NotificationManager businessName={businessName} />
             <OfflineBadge />
             <ThemeToggle />
             <MobileNav onAboutClick={() => setShowAboutModal(true)} />
