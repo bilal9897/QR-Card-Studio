@@ -9,7 +9,7 @@ const WHATSAPP_NUMBER = '919627897600';
 const WHATSAPP_MESSAGE = encodeURIComponent(
   'Hi, I have a query regarding QR Card Studio.'
 );
-const EMAIL = 'support@qrstudio.in';
+const EMAIL = 'bilalsalmani600@gmail.com';
 
 export default function Footer({ onAboutClick }: FooterProps) {
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;

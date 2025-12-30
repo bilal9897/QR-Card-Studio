@@ -857,8 +857,6 @@ function init() {
     updateCardPreview();
     updatePreviewSpecs();
     validateForm();
-    
-    console.log('QR Card Studio initialized successfully!');
 }
 
 // Run when DOM is ready
