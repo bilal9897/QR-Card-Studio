@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary SEO Meta Tags -->
+    <title>QR Card Studio — Free QR Feedback Card Generator for Business</title>
+    <meta name="description" content="Create professional, print-ready QR feedback cards for your business. Free HD downloads. Works 100% offline. No signup required.">
+    <meta name="author" content="QR Card Studio">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#141618">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    
+    <!-- html-to-image for PNG export -->
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="brand">
+                <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 3l1.912 5.813a2 2 0 001.272 1.272L21 12l-5.813 1.912a2 2 0 00-1.272 1.272L12 21l-1.912-5.813a2 2 0 00-1.272-1.272L3 12l5.813-1.912a2 2 0 001.272-1.272L12 3z"/>
+                </svg>
+                <span class="brand-name">QR Card Studio</span>
+            </div>
+            
+            <nav class="nav-desktop">
+                <a href="#create" class="nav-link">Create</a>
+                <a href="#gallery" class="nav-link">Gallery</a>
+                <button class="nav-link" id="aboutBtn">About</button>
+            </nav>
+            
+            <div class="header-actions">
+                <div class="offline-badge" id="offlineBadge">
+                    <span class="offline-dot"></span>
+                    100% OFFLINE
+                    <span class="offline-dot"></span>
+                </div>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+                    </svg>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <line x1="3" y1="18" x2="21" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-content">
+            <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            <a href="#create" class="mobile-nav-link">Create</a>
+            <a href="#gallery" class="mobile-nav-link">Gallery</a>
+            <button class="mobile-nav-link" id="aboutBtnMobile">About</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="create" class="main-content">
+        <div class="container">
+            <!-- Hero Section -->
+            <div class="hero">
+                <h1 class="hero-title">
+                    Create <span class="hero-italic">beautiful</span> review cards
+                </h1>
+                <p class="hero-subtitle">
+                    Design premium feedback cards for your business. 
+                    Print-ready, professional, and crafted to inspire trust.
+                </p>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="editor-layout">
+                <!-- Left Column: Controls -->
+                <div class="controls-column">
+                    
+                    <!-- Template Collections -->
+                    <section class="panel-section">
+                        <div class="section-header">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 3l1.912 5.813a2 2 0 001.272 1.272L21 12l-5.813 1.912a2 2 0 00-1.272 1.272L12 21l-1.912-5.813a2 2 0 00-1.272-1.272L3 12l5.813-1.912a2 2 0 001.272-1.272L12 3z"/>
+                            </svg>
+                            <span class="section-label">Template Collections</span>
+                        </div>
+                        
+                        <!-- Professional Collection -->
+                        <div class="template-collection">
+                            <div class="collection-header">
+                                <div>
+                                    <h3 class="collection-title">Professional Collection</h3>
+                                    <p class="collection-subtitle">Business & social styles</p>
+                                </div>
+                                <span class="free-badge">✓ Free</span>
+                            </div>
+                            <div class="template-grid" id="professionalTemplates"></div>
+                        </div>
+                        
+                        <!-- Luxury Collection -->
+                        <div class="template-collection">
+                            <div class="collection-header">
+                                <div>
+                                    <h3 class="collection-title">Luxury Collection</h3>
+                                    <p class="collection-subtitle">Dark gradient designs</p>
+                                </div>
+                                <span class="free-badge">✓ Free</span>
+                            </div>
+                            <div class="template-grid" id="luxuryTemplates"></div>
+                        </div>
+                        
+                        <!-- Elite Collection -->
+                        <div class="template-collection elite-collection">
+                            <div class="collection-header">
+                                <div>
+                                    <h3 class="collection-title">Elite Collection</h3>
+                                    <p class="collection-subtitle">RGB border premium</p>
+                                </div>
+                                <span class="elite-badge">✦ Elite</span>
+                            </div>
+                            <div class="template-grid" id="eliteTemplates"></div>
+                        </div>
+                        <p class="all-free-notice">✓ All templates and exports are 100% free — HD PNG & Print-Ready PDF</p>
+                    </section>
+
+                    <!-- Format & Size -->
+                    <section class="panel-section">
+                        <div class="format-selector">
+                            <label class="section-label">Card Format</label>
+                            <div class="format-options">
+                                <button class="format-option active" data-format="table-tent">
+                                    <div class="format-preview format-tent"></div>
+                                    <span>Table Tent</span>
+                                </button>
+                                <button class="format-option" data-format="square">
+                                    <div class="format-preview format-square"></div>
+                                    <span>Square</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="size-selector">
+                            <label class="section-label">Card Size</label>
+                            <div class="size-options">
+                                <button class="size-option" data-size="small">
+                                    <span class="size-name">Small</span>
+                                    <span class="size-dim">2.5" × 3.5"</span>
+                                </button>
+                                <button class="size-option active" data-size="medium">
+                                    <span class="size-name">Medium</span>
+                                    <span class="size-dim">3.2" × 4.8"</span>
+                                </button>
+                                <button class="size-option" data-size="large">
+                                    <span class="size-name">Large</span>
+                                    <span class="size-dim">4" × 6"</span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Branding -->
+                    <section class="panel-section">
+                        <label class="section-label">Branding</label>
+                        
+                        <div class="upload-group">
+                            <label class="upload-label">Logo (optional)</label>
+                            <div class="upload-area" id="logoUploadArea">
+                                <input type="file" id="logoInput" accept="image/*" hidden>
+                                <div class="upload-placeholder" id="logoPlaceholder">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                                        <path d="M21 15l-5-5L5 21"/>
+                                    </svg>
+                                    <span>Click to upload logo</span>
+                                </div>
+                                <div class="upload-preview" id="logoPreview" hidden>
+                                    <img id="logoImg" alt="Logo preview">
+                                    <button class="upload-remove" id="logoRemove">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Card Content -->
+                    <section class="panel-section">
+                        <label class="section-label">Card Content</label>
+                        
+                        <div class="input-group">
+                            <label for="businessName" class="input-label">
+                                Business Name <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="businessName" 
+                                class="input-field" 
+                                placeholder="The Golden Spoon"
+                                maxlength="40"
+                            >
+                            <span class="input-hint" id="businessNameHint"></span>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="message" class="input-label">Message</label>
+                            <textarea 
+                                id="message" 
+                                class="input-field textarea" 
+                                placeholder="Your feedback helps us serve you better. We'd love to hear about your experience."
+                                maxlength="150"
+                                rows="3"
+                            ></textarea>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="feedbackUrl" class="input-label">
+                                Feedback Link <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="url" 
+                                id="feedbackUrl" 
+                                class="input-field" 
+                                placeholder="https://g.page/r/..."
+                            >
+                            <span class="input-hint">Google Review link, Yelp, or any feedback URL</span>
+                            <span class="input-error" id="feedbackUrlError" hidden>Please enter a valid URL</span>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="ctaText" class="input-label">Call to Action</label>
+                            <input 
+                                type="text" 
+                                id="ctaText" 
+                                class="input-field" 
+                                placeholder="Scan to Review"
+                                maxlength="25"
+                            >
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right Column: Preview -->
+                <aside class="preview-column">
+                    <div class="preview-container">
+                        <p class="preview-label">Live Preview</p>
+                        
+                        <div class="preview-wrapper">
+                            <!-- Card Preview -->
+                            <div class="card-preview" id="cardPreview">
+                                <!-- Logo -->
+                                <div class="card-logo" id="cardLogo" hidden>
+                                    <img id="cardLogoImg" alt="">
+                                </div>
+                                
+                                <!-- Business Name -->
+                                <h2 class="card-business-name" id="cardBusinessName">Your Business</h2>
+                                
+                                <!-- Message -->
+                                <p class="card-message" id="cardMessage">We value your feedback. Scan to share your experience.</p>
+                                
+                                <!-- QR Code -->
+                                <div class="card-qr-wrapper">
+                                    <div class="card-qr" id="cardQr">
+                                        <span class="qr-placeholder">Enter a link to generate QR</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- CTA -->
+                                <p class="card-cta" id="cardCta">SCAN TO REVIEW</p>
+                            </div>
+                        </div>
+                        
+                        <p class="preview-specs" id="previewSpecs">3.2" × 4.8" at 300 DPI • Print-ready</p>
+                    </div>
+                </aside>
+
+                <!-- Download Section -->
+                <div class="download-section">
+                    <div class="free-banner">
+                        <p>✓ All exports are FREE — HD PNG & Print-Ready PDF</p>
+                    </div>
+                    
+                    <button class="btn-primary download-btn" id="downloadBtn" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Download HD PNG
+                    </button>
+                    
+                    <p class="download-hint" id="downloadHint" hidden>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        Please fill in the required fields correctly
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Stand Gallery Section -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <div class="gallery-header">
+                <p class="gallery-label">Real World Usage</p>
+                <h2 class="gallery-title">How it looks in <span class="italic">real life</span></h2>
+                <p class="gallery-subtitle">Premium QR feedback stands designed to blend seamlessly with your business environment.</p>
+            </div>
+            
+            <div class="gallery-grid">
+                <figure class="gallery-item">
+                    <div class="gallery-image-wrapper">
+                        <img src="../assets/gallery/restaurant-stand.jpg" alt="Elegant acrylic QR code stand on restaurant table" loading="lazy">
+                    </div>
+                    <figcaption>Restaurant table feedback stand</figcaption>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="gallery-image-wrapper">
+                        <img src="../assets/gallery/salon-counter.jpg" alt="Modern QR code stand at salon reception" loading="lazy">
+                    </div>
+                    <figcaption>Salon counter QR stand</figcaption>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="gallery-image-wrapper">
+                        <img src="../assets/gallery/cafe-table.jpg" alt="Small QR card stand on cafe table" loading="lazy">
+                    </div>
+                    <figcaption>Café billing desk QR</figcaption>
+                </figure>
+                <figure class="gallery-item">
+                    <div class="gallery-image-wrapper">
+                        <img src="../assets/gallery/retail-counter.jpg" alt="QR feedback card on retail checkout counter" loading="lazy">
+                    </div>
+                    <figcaption>Retail counter feedback card</figcaption>
+                </figure>
+            </div>
+            
+            <div class="gallery-cta">
+                <p class="gallery-cta-title">Want these stands printed or ordered in bulk?</p>
+                <p class="gallery-cta-subtitle">Get custom-branded QR stands, acrylic displays, or bulk feedback cards for your business.</p>
+                <a href="https://wa.me/919627897600?text=Hi%2C%20I%20want%20to%20order%20QR%20feedback%20stands%20or%20bulk%20cards%20for%20my%20business." target="_blank" rel="noopener noreferrer" class="btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+                    </svg>
+                    Order via WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Brand -->
+                <div class="footer-brand">
+                    <div class="brand">
+                        <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 3l1.912 5.813a2 2 0 001.272 1.272L21 12l-5.813 1.912a2 2 0 00-1.272 1.272L12 21l-1.912-5.813a2 2 0 00-1.272-1.272L3 12l5.813-1.912a2 2 0 001.272-1.272L12 3z"/>
+                        </svg>
+                        <span class="brand-name">QR Card Studio</span>
+                    </div>
+                    <p class="footer-tagline">Premium QR feedback card generator for businesses that value their customers.</p>
+                    <div class="footer-privacy">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <span>100% Offline • Zero Data Collection</span>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="footer-links">
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul>
+                        <li><button id="aboutBtnFooter">About</button></li>
+                        <li><a href="#gallery">Stand Gallery</a></li>
+                        <li><a href="#create">Create Card</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact -->
+                <div class="footer-contact">
+                    <h3 class="footer-heading">Contact & Orders</h3>
+                    <ul>
+                        <li>
+                            <a href="mailto:support@qrcardstudio.com?subject=QR Card Studio Inquiry">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                                support@qrcardstudio.com
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://wa.me/919627897600?text=Hi%2C%20I%20want%20to%20order%20QR%20feedback%20stands%20or%20bulk%20cards%20for%20my%20business." target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+                                </svg>
+                                Order via WhatsApp
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="footer-contact-note">For stand orders, bulk printing, and custom branding requests.</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>All data stays in your browser. Nothing is stored or sent to any server.</p>
+                <p>© <span id="currentYear"></span> QR Card Studio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- About Modal -->
+    <div class="modal-overlay" id="aboutModal" hidden>
+        <div class="modal">
+            <button class="modal-close" id="aboutModalClose" aria-label="Close modal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            
+            <h2 class="modal-title">About QR Card Studio</h2>
+            
+            <div class="modal-content">
+                <p>QR Card Studio is a free, privacy-focused tool for creating professional QR feedback cards.</p>
+                
+                <h3>Key Features</h3>
+                <ul>
+                    <li>10 beautiful templates across 3 collections</li>
+                    <li>HD PNG export at 300 DPI</li>
+                    <li>Works 100% offline</li>
+                    <li>Zero data collection</li>
+                    <li>Mobile responsive design</li>
+                </ul>
+                
+                <h3>Privacy Promise</h3>
+                <p>All processing happens in your browser. Your business data, logos, and URLs are never sent to any server.</p>
+                
+                <h3>Contact</h3>
+                <p>
+                    Email: <a href="mailto:support@qrcardstudio.com">support@qrcardstudio.com</a><br>
+                    WhatsApp: <a href="https://wa.me/919627897600" target="_blank" rel="noopener noreferrer">+91 96278 97600</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
