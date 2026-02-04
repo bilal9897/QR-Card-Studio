@@ -6,12 +6,6 @@ import { useEffect } from 'react';
  */
 export function useScreenshotProtection() {
     useEffect(() => {
-        // Disable right-click context menu
-        const handleContextMenu = (e: MouseEvent) => {
-            e.preventDefault();
-            return false;
-        };
-
         // Disable common screenshot keyboard shortcuts
         const handleKeyDown = (e: KeyboardEvent) => {
             // Print Screen
@@ -63,8 +57,7 @@ export function useScreenshotProtection() {
             }
         };
 
-        // Add event listeners
-        document.addEventListener('contextmenu', handleContextMenu);
+        // Add event listeners (removed contextmenu)
         document.addEventListener('keydown', handleKeyDown);
 
         // Check for DevTools periodically
@@ -72,7 +65,6 @@ export function useScreenshotProtection() {
 
         // Cleanup
         return () => {
-            document.removeEventListener('contextmenu', handleContextMenu);
             document.removeEventListener('keydown', handleKeyDown);
             clearInterval(devToolsInterval);
         };
