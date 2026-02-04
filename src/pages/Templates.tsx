@@ -10,6 +10,8 @@ import { cn } from '@/lib/utils';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import BottomNav from '@/components/BottomNav';
+import AboutModal from '@/components/AboutModal';
 
 export default function Templates() {
     const navigate = useNavigate();
@@ -18,6 +20,7 @@ export default function Templates() {
     const [viewMode, setViewMode] = useState<'official' | 'community'>('official');
     const [hoveredTemplate, setHoveredTemplate] = useState<string | null>(null);
     const [selectedTemplate, setSelectedTemplate] = useState<typeof templates[0] | null>(null);
+    const [showAboutModal, setShowAboutModal] = useState(false);
 
     // Filtering Logic
     const filteredTemplates = templates.filter(t => {
@@ -56,7 +59,7 @@ export default function Templates() {
     };
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-background pb-20 md:pb-0">
             {/* Header */}
             <header className="border-b border-border sticky top-0 z-40 bg-background/80 backdrop-blur-md">
                 <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -68,9 +71,6 @@ export default function Templates() {
                     </Link>
 
                     <div className="flex items-center gap-4">
-                        <Button variant="ghost" size="sm" onClick={() => navigate('/create')}>
-                            Open Generator
-                        </Button>
                         <Button size="sm" onClick={() => navigate('/create')} className="gap-2">
                             Create New <ChevronRight className="w-4 h-4" />
                         </Button>
@@ -359,6 +359,12 @@ export default function Templates() {
                     )}
                 </DialogContent>
             </Dialog>
+
+            {/* About Modal */}
+            {showAboutModal && <AboutModal isOpen={showAboutModal} onClose={() => setShowAboutModal(false)} />}
+
+            {/* Mobile Bottom Navigation */}
+            <BottomNav onAboutClick={() => setShowAboutModal(true)} />
         </div>
     );
 }

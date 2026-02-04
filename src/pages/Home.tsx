@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, QrCode } from "lucide-react";
-
+import { useState } from "react";
 import { motion } from "framer-motion";
+import BottomNav from "@/components/BottomNav";
+import AboutModal from "@/components/AboutModal";
 
 export default function Home() {
+    const [showAboutModal, setShowAboutModal] = useState(false);
+
     return (
-        <div className="min-h-screen bg-[#0a0a0a] text-[#f5f5f0] flex flex-col font-sans selection:bg-[#c9a961] selection:text-black">
+        <div className="min-h-screen bg-[#0a0a0a] text-[#f5f5f0] flex flex-col font-sans selection:bg-[#c9a961] selection:text-black pb-20 md:pb-0">
 
             {/* Navbar - Centered Layout */}
             <motion.header
@@ -298,6 +302,12 @@ export default function Home() {
                     </div>
                 </div>
             </footer>
+
+            {/* About Modal */}
+            {showAboutModal && <AboutModal isOpen={showAboutModal} onClose={() => setShowAboutModal(false)} />}
+
+            {/* Mobile Bottom Navigation */}
+            <BottomNav onAboutClick={() => setShowAboutModal(true)} />
         </div>
     );
 }
