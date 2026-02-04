@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { toPng } from 'html-to-image';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Download, Sparkles, AlertCircle, FileText, ChevronDown, Printer, Check, Maximize2, Layers, FolderOpen } from 'lucide-react';
+import TiltWrapper from '@/components/TiltWrapper';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { Download, Sparkles, AlertCircle, FileText, ChevronDown, Printer, Check, Maximize2, Layers, FolderOpen, QrCode } from 'lucide-react';
 import CardPreview, { type CardFormat, getPrintSize } from '@/components/CardPreview';
 import FormatSelector from '@/components/FormatSelector';
 import SizeSelector, { type CardSize } from '@/components/SizeSelector';
@@ -13,6 +14,8 @@ import QRStyleSelector from '@/components/QRStyleSelector';
 import { type QRStyleOptions } from '@/lib/qr-types';
 import InputField from '@/components/InputField';
 import TemplateSelector from '@/components/TemplateSelector';
+import PrintGuideModal from '@/components/PrintGuideModal';
+import SocialMockupModal from '@/components/SocialMockupModal';
 import OfflineBadge from '@/components/OfflineBadge';
 import ThemeToggle from '@/components/ThemeToggle';
 import ColorCustomizer from '@/components/ColorCustomizer';
@@ -75,6 +78,7 @@ export default function Generator() {
   // QR Type state (NEW)
   const [qrType, setQRType] = useState<QRType>('url');
   const [qrData, setQRData] = useState<QRData>({ url: '' });
+  const [showPrintGuide, setShowPrintGuide] = useState(false);
 
   // Second QR state (for dual-qr format)
   const [qrType2, setQRType2] = useState<QRType>('url');
@@ -337,9 +341,16 @@ export default function Generator() {
     }
   };
 
-  // Download card as HD PNG (always free)
-  const handleDownload = async () => {
+  // Handle download click - check requirements then show guide
+  const initiateDownload = () => {
     if (!cardRef.current || !canDownload) return;
+    // Show guide before actual download
+    setShowPrintGuide(true);
+  };
+
+  // Perform download after guide is confirmed
+  const handleDownloadConfirm = () => {
+    setShowPrintGuide(false);
     performHDDownload();
   };
 
@@ -356,7 +367,7 @@ export default function Generator() {
       if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
         e.preventDefault();
         if (canDownload && !isDownloading) {
-          handleDownload();
+          initiateDownload();
         }
       }
 
@@ -393,7 +404,7 @@ export default function Generator() {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [canDownload, isDownloading, handleDownload, toast]);
+  }, [canDownload, isDownloading, toast]);
 
   // Perform PDF export
   const performPDFExport = async () => {
@@ -440,17 +451,35 @@ export default function Generator() {
     setTouched(prev => ({ ...prev, [field]: true }));
   };
 
+
+
+  // Props for generic card preview usage (minimizing duplication)
+  const commonCardProps = {
+    format, size, customSize,
+    businessName: cleanInput(businessName),
+    message: cleanInput(message),
+    ctaText: cleanInput(ctaText),
+    qrCodeUrl, logoUrl, qrLogoUrl,
+    backgroundUrl, backgroundOpacity, showBackground,
+    themeId: selectedTemplateId || 'minimal',
+    colors: cardColors,
+    showBadge: showCodexaBadge,
+    qrStyle, qrContent, qrContent2, qrLogoUrl2
+  };
+
   const pdfPageSize = getPDFPageSize(format, size, includeBleed, includeCropMarks);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0a0a] text-foreground transition-colors duration-300 selection:bg-[#c9a961] selection:text-black">
       {/* Header */}
-      <header className="border-b border-border bg-card/50">
+      <header className="border-b border-gray-200 dark:border-white/5 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-md sticky top-0 z-50 transition-colors duration-300">
         <div className="container py-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Sparkles className="w-5 h-5 text-accent" />
-            <span className="font-serif text-xl text-foreground">QR Card Studio</span>
-          </div>
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 bg-[#c9a961] rounded-md flex items-center justify-center text-black shadow-[0_0_15px_rgba(201,169,97,0.3)] transition-transform group-hover:scale-105">
+              <QrCode className="w-6 h-6" />
+            </div>
+            <span className="font-serif text-xl tracking-wide text-foreground">QR Card Studio</span>
+          </Link>
           <nav className="hidden md:flex items-center gap-1">
             <a href="#create" className="text-sm text-foreground font-medium px-3 py-1.5">
               Create
@@ -492,21 +521,21 @@ export default function Generator() {
         <div className="lg:max-w-6xl lg:mx-auto">
           {/* Hero - refined container */}
           <div className="text-center mb-12 sm:mb-20 w-full animate-fade-in">
-            <div className="max-w-4xl mx-auto bg-card/60 border border-border/50 rounded-2xl px-6 py-10 sm:px-10 sm:py-14 lg:py-16 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-accent/10 hover:border-accent/30">
+            <div className="max-w-4xl mx-auto bg-white/80 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-6 py-10 sm:px-10 sm:py-14 lg:py-16 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-accent/5 dark:hover:shadow-accent/10 hover:border-accent/30">
               {/* Decorative accent */}
               <div className="flex justify-center mb-6">
-                <div className="flex items-center gap-2 text-accent">
-                  <div className="w-8 h-px bg-accent/40" />
+                <div className="flex items-center gap-2 text-[#c9a961]">
+                  <div className="w-8 h-px bg-[#c9a961]/40" />
                   <Sparkles className="w-5 h-5" />
-                  <div className="w-8 h-px bg-accent/40" />
+                  <div className="w-8 h-px bg-[#c9a961]/40" />
                 </div>
               </div>
               <h1 className="font-serif text-2xl sm:text-display-md md:text-display-lg text-foreground mb-4 sm:mb-6">
-                Create <span className="italic text-accent">premium</span> review cards
+                Design <span className="italic text-accent">smart</span> review cards
               </h1>
-              <p className="text-muted-foreground text-base sm:text-lg leading-relaxed max-w-[720px] mx-auto">
-                Design premium feedback cards for your business.
-                Print-ready, professional, and crafted to inspire trust.
+              <p className="text-muted-foreground/70 text-base sm:text-lg leading-relaxed max-w-[720px] mx-auto">
+                Create professional, scan-ready cards that double your review rate.
+                Includes AI message generation and analytics tracking.
               </p>
             </div>
           </div>
@@ -759,16 +788,16 @@ export default function Generator() {
 
             {/* Preview column - appears after controls on mobile, sticky on desktop */}
             <aside className="lg:sticky lg:top-8 lg:self-start w-full lg:w-[400px]">
-              {/* Preview Container with visual framing */}
-              <div className="preview-container">
-                {/* Header */}
-                <p className="text-xs uppercase tracking-widest text-muted-foreground text-center mb-4">
+              {/* Premium Preview Container */}
+              <div className="relative border border-white/10 dark:border-white/10 rounded-lg p-6 bg-card/30 dark:bg-transparent backdrop-blur-sm">
+                {/* Header Label */}
+                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground text-center mb-6 font-medium">
                   Live Preview
                 </p>
 
                 {/* Card preview wrapper */}
                 <div
-                  className="flex justify-center items-center overflow-hidden"
+                  className="flex justify-center items-center overflow-hidden mb-6"
                   role="region"
                   aria-label="Card preview"
                   aria-live="polite"
@@ -776,7 +805,7 @@ export default function Generator() {
                   <div className="relative">
                     {/* Ambient shadow */}
                     <div
-                      className="absolute inset-0 blur-3xl opacity-30 bg-accent/20 scale-90 translate-y-8 hidden sm:block"
+                      className="absolute inset-0 blur-3xl opacity-20 bg-accent/20 scale-90 translate-y-8 hidden sm:block"
                       aria-hidden="true"
                     />
 
@@ -806,43 +835,46 @@ export default function Generator() {
                       </div>
                     )}
 
-                    <CardPreview
-                      ref={cardRef}
-                      format={format}
-                      size={size}
-                      businessName={cleanInput(businessName)}
-                      message={cleanInput(message)}
-                      ctaText={cleanInput(ctaText)}
-                      qrCodeUrl={qrCodeUrl}
-                      logoUrl={logoUrl}
-                      qrLogoUrl={qrLogoUrl}
-                      backgroundUrl={backgroundUrl}
-                      backgroundOpacity={backgroundOpacity}
-                      showBackground={showBackground}
-                      themeId={selectedTemplateId || 'minimal'}
-                      colors={cardColors}
-                      customSize={customSize}
-                      showBadge={true}
-                      qrStyle={qrStyle} // Pass artistic style
-                      qrContent={qrContent} // Pass raw content
-                      qrContent2={qrContent2}
-                      qrLogoUrl2={qrLogoUrl2}
-                    />
+                    <TiltWrapper intensity={10} perspective={1500}>
+                      <CardPreview
+                        ref={cardRef}
+                        format={format}
+                        size={size}
+                        businessName={cleanInput(businessName)}
+                        message={cleanInput(message)}
+                        ctaText={cleanInput(ctaText)}
+                        qrCodeUrl={qrCodeUrl}
+                        logoUrl={logoUrl}
+                        qrLogoUrl={qrLogoUrl}
+                        backgroundUrl={backgroundUrl}
+                        backgroundOpacity={backgroundOpacity}
+                        showBackground={showBackground}
+                        themeId={selectedTemplateId || 'minimal'}
+                        colors={cardColors}
+                        customSize={customSize}
+                        showBadge={true}
+                        qrStyle={qrStyle} // Pass artistic style
+                        qrContent={qrContent} // Pass raw content
+                        qrContent2={qrContent2}
+                        qrLogoUrl2={qrLogoUrl2}
+                      />
+                    </TiltWrapper>
                   </div>
                 </div>
 
 
-                {/* Print specs and actual size button */}
-                <div className="flex items-center justify-center gap-3 mt-4">
-                  <p className="text-xs text-muted-foreground/60">
+
+                {/* Card Info Footer */}
+                <div className="flex items-center justify-between text-[11px] text-muted-foreground/60 pt-4 mt-2 border-t border-white/5">
+                  <span>
                     {getPrintSize(format, size, customSize)} at 300 DPI • Print-ready
-                  </p>
+                  </span>
                   <button
                     onClick={() => setShowPrintPreview(true)}
-                    className="flex items-center gap-1 px-2 py-1 text-[10px] text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors focus-ring"
+                    className="flex items-center gap-1.5 hover:text-muted-foreground transition-colors"
                     aria-label="Preview at actual print size"
                   >
-                    <Maximize2 className="w-3 h-3" />
+                    <Maximize2 className="w-3.5 h-3.5" />
                     Actual Size
                   </button>
                 </div>
@@ -889,7 +921,7 @@ export default function Generator() {
 
               {/* Primary Download Button - HD PNG */}
               <button
-                onClick={handleDownload}
+                onClick={initiateDownload}
                 disabled={!canDownload || isDownloading}
                 className="btn-primary w-full flex items-center justify-center gap-3"
                 aria-describedby={!canDownload ? 'download-hint' : undefined}
@@ -904,12 +936,13 @@ export default function Generator() {
               </button>
 
               {/* Share Buttons Row */}
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap">
                 <EmailShare
                   businessName={cleanInput(businessName)}
                   onDownloadFirst={performHDDownload}
                   isDownloading={isDownloading}
                 />
+                <SocialMockupModal cardProps={commonCardProps} />
                 <CopyLinkButton
                   format={format}
                   size={size}
@@ -1036,6 +1069,13 @@ export default function Generator() {
       <AboutModal
         isOpen={showAboutModal}
         onClose={() => setShowAboutModal(false)}
+      />
+
+      {/* Print Guide Modal */}
+      <PrintGuideModal
+        isOpen={showPrintGuide}
+        onClose={() => setShowPrintGuide(false)}
+        onConfirm={handleDownloadConfirm}
       />
 
       {/* Install Banner for mobile users */}

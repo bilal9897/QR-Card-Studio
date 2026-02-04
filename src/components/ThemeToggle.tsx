@@ -9,15 +9,15 @@ export default function ThemeToggle() {
     const saved = localStorage.getItem('qr-card-theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const shouldBeDark = saved ? saved === 'dark' : prefersDark;
-    
+
     setIsDark(shouldBeDark);
-    document.documentElement.classList.toggle('light', !shouldBeDark);
+    document.documentElement.classList.toggle('dark', shouldBeDark);
   }, []);
 
   const toggleTheme = () => {
     const newIsDark = !isDark;
     setIsDark(newIsDark);
-    document.documentElement.classList.toggle('light', !newIsDark);
+    document.documentElement.classList.toggle('dark', newIsDark);
     localStorage.setItem('qr-card-theme', newIsDark ? 'dark' : 'light');
   };
 

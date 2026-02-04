@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { templates, type TemplateTier, getTierInfo } from '@/lib/templates';
 import CardPreview from '@/components/CardPreview';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { LayoutGrid, Check, Sparkles, Filter, ChevronRight, Palette, Search, Star, User, Globe, X } from 'lucide-react';
+import { LayoutGrid, Check, Sparkles, Filter, ChevronRight, Palette, Search, Star, User, Globe, X, QrCode } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
@@ -60,12 +60,12 @@ export default function Templates() {
             {/* Header */}
             <header className="border-b border-border sticky top-0 z-40 bg-background/80 backdrop-blur-md">
                 <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-                    <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-                        <div className="w-8 h-8 bg-foreground rounded-lg flex items-center justify-center">
-                            <LayoutGrid className="w-5 h-5 text-background" />
+                    <Link to="/" className="flex items-center gap-3 group">
+                        <div className="w-10 h-10 bg-[#c9a961] rounded-md flex items-center justify-center text-black shadow-[0_0_15px_rgba(201,169,97,0.3)] transition-transform group-hover:scale-105">
+                            <QrCode className="w-6 h-6" />
                         </div>
-                        <span className="font-display text-xl font-bold tracking-tight">QR Card Studio</span>
-                    </div>
+                        <span className="font-serif text-xl tracking-wide font-bold">QR Card Studio</span>
+                    </Link>
 
                     <div className="flex items-center gap-4">
                         <Button variant="ghost" size="sm" onClick={() => navigate('/create')}>

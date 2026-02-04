@@ -16,12 +16,23 @@ export default function Home() {
             >
                 <div className="max-w-7xl mx-auto flex items-center justify-between relative">
 
-                    {/* Logo (Left) */}
+                    {/* Logo (Left) - Premium Design */}
                     <div className="flex items-center gap-3 w-[200px]">
-                        <div className="w-10 h-10 bg-[#c9a961] rounded-md flex items-center justify-center text-black shadow-[0_0_15px_rgba(201,169,97,0.3)]">
-                            <QrCode className="w-6 h-6" />
+                        <div className="relative group">
+                            {/* Glow effect */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-[#c9a961] to-[#a08b6e] rounded-lg blur-md opacity-40 group-hover:opacity-60 transition-opacity" />
+                            {/* Logo container */}
+                            <div className="relative w-10 h-10 bg-gradient-to-br from-[#c9a961] to-[#b8956e] rounded-lg flex items-center justify-center shadow-lg">
+                                <QrCode className="w-5 h-5 text-[#0a0a0a]" strokeWidth={2.5} />
+                            </div>
                         </div>
-                        <span className="font-serif text-xl tracking-wide hidden sm:block">QR Card Studio</span>
+                        <div className="hidden sm:block">
+                            <div className="font-serif text-xl tracking-tight leading-none">
+                                <span className="text-white">QR Card</span>
+                                <span className="text-[#c9a961] ml-1.5">Studio</span>
+                            </div>
+                            <div className="text-[10px] text-white/40 tracking-[0.15em] uppercase mt-0.5">Premium Cards</div>
+                        </div>
                     </div>
 
                     {/* Nav Links (Absolute Center) */}
@@ -75,9 +86,9 @@ export default function Home() {
                         transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
                         className="text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight mb-8 leading-[1.1]"
                     >
-                        Create Premium <br />
+                        Grow your business with <br />
                         <span className="font-serif italic text-[#c9a961]">
-                            Review Cards
+                            Smart Reviews
                         </span>
                     </motion.h1>
 
@@ -88,8 +99,8 @@ export default function Home() {
                         transition={{ delay: 0.5, duration: 0.8 }}
                         className="text-lg md:text-xl text-white/50 max-w-2xl mx-auto mb-12 font-light leading-relaxed"
                     >
-                        Design premium feedback cards for your business.<br className="hidden md:block" />
-                        Print-ready, professional, and crafted to inspire trust.
+                        More than just QR cards. The complete toolkit to collect feedback,<br className="hidden md:block" />
+                        generate AI responses, and track customer satisfaction.
                     </motion.p>
 
                     {/* Buttons */}
@@ -100,9 +111,10 @@ export default function Home() {
                         className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
                     >
                         <Link to="/create" className="w-full sm:w-auto">
-                            <button className="w-full sm:w-auto px-8 py-4 bg-[#f5f5f0] text-[#0a0a0a] rounded-sm font-semibold text-base transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3">
-                                <QrCode className="w-5 h-5" />
-                                Start Creating Now
+                            <button className="group relative w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-[#c9a961] to-[#b8956e] text-[#0a0a0a] rounded-lg font-semibold text-base transition-all hover:shadow-[0_0_30px_rgba(201,169,97,0.4)] hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 overflow-hidden">
+                                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                                <QrCode className="w-5 h-5 relative z-10" strokeWidth={2.5} />
+                                <span className="relative z-10">Start Creating Now</span>
                             </button>
                         </Link>
 
@@ -282,7 +294,7 @@ export default function Home() {
 
                     <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/20">
                         <p>&copy; 2025 QR Card Studio. All rights reserved.</p>
-                        <p>Designed for excellence.</p>
+                        <p>Designed for excellence • Created by Bilal</p>
                     </div>
                 </div>
             </footer>

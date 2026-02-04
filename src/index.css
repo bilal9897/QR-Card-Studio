@@ -31,8 +31,78 @@
 
 @layer base {
   :root {
-    /* Dark Luxury Palette - Charcoal, Ivory, Gold */
-    --background: 220 10% 8%;
+    /* Light Mode Default (Sun) */
+    --background: 45 20% 96%;
+    --foreground: 220 10% 12%;
+
+    --card: 45 25% 98%;
+    --card-foreground: 220 10% 12%;
+
+    --popover: 45 20% 94%;
+    --popover-foreground: 220 10% 12%;
+
+    --primary: 220 10% 12%;
+    --primary-foreground: 45 20% 96%;
+
+    --secondary: 45 15% 90%;
+    --secondary-foreground: 220 10% 12%;
+
+    --muted: 45 10% 85%;
+    --muted-foreground: 220 8% 40%;
+
+    --accent: 35 60% 45%;
+    --accent-foreground: 45 20% 96%;
+
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 145 60% 35%;
+    --success-foreground: 145 100% 98%;
+
+    --border: 45 15% 82%;
+    --input: 45 15% 82%;
+    --ring: 35 60% 45%;
+
+    --radius: 0.25rem;
+
+    /* === CARD THEME VARIABLES === */
+    --card-preview-bg: #fdfcfa;
+    --card-preview-text: #1a1815;
+    --card-preview-accent: #b8956e;
+    --card-preview-border: rgba(26, 24, 21, 0.12);
+    --card-preview-muted: rgba(26, 24, 21, 0.6);
+
+    --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+    --card-border: 220 6% 90%;
+    --card-accent: 35 60% 45%;
+
+    --print-bg: 45 30% 97%;
+    --print-fg: 220 10% 12%;
+    --print-muted: 220 6% 45%;
+    --print-border: 45 15% 85%;
+
+    --font-display: 'Instrument Serif', serif;
+    --font-body: 'DM Sans', sans-serif;
+
+    --shadow-paper: 0 1px 3px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-elevated: 0 4px 6px rgba(0, 0, 0, 0.05), 0 12px 24px rgba(0, 0, 0, 0.1);
+    --shadow-product: 0 8px 16px rgba(0, 0, 0, 0.1), 0 32px 64px rgba(0, 0, 0, 0.15);
+
+    --grain-opacity: 0.025;
+
+    --sidebar-background: 45 25% 98%;
+    --sidebar-foreground: 220 10% 12%;
+    --sidebar-primary: 35 60% 45%;
+    --sidebar-primary-foreground: 45 20% 96%;
+    --sidebar-accent: 45 15% 90%;
+    --sidebar-accent-foreground: 220 10% 12%;
+    --sidebar-border: 45 15% 82%;
+    --sidebar-ring: 35 60% 45%;
+  }
+
+  .dark {
+    /* Dark Luxury Palette (Moon) */
+    --background: 0 0% 4%;
     --foreground: 45 20% 92%;
 
     --card: 220 8% 12%;
@@ -50,14 +120,12 @@
     --muted: 220 6% 22%;
     --muted-foreground: 45 8% 55%;
 
-    /* Subtle Gold Accent */
     --accent: 42 45% 52%;
     --accent-foreground: 220 10% 8%;
 
     --destructive: 0 65% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Success state */
     --success: 145 60% 40%;
     --success-foreground: 145 100% 95%;
 
@@ -65,39 +133,10 @@
     --input: 220 6% 20%;
     --ring: 42 45% 52%;
 
-    --radius: 0.25rem;
-
-    /* === CARD THEME VARIABLES (controlled by data-theme) === */
-    --card-preview-bg: #fdfcfa;
-    --card-preview-text: #1a1815;
-    --card-preview-accent: #b8956e;
-    --card-preview-border: rgba(26, 24, 21, 0.12);
-    --card-preview-muted: rgba(26, 24, 21, 0.6);
-
-    /* Card-specific premium tokens */
+    /* Card tokens update for dark mode */
     --card-shadow: 0 25px 50px -12px hsl(0 0% 0% / 0.5);
     --card-border: 220 6% 25%;
     --card-accent: 42 45% 52%;
-
-    /* Print card colors (stays light for printing) */
-    --print-bg: 45 30% 97%;
-    --print-fg: 220 10% 12%;
-    --print-muted: 220 6% 45%;
-    --print-border: 45 15% 85%;
-
-    /* Typography tokens */
-    --font-display: 'Times New Roman', Times, serif;
-    --font-body: 'Times New Roman', Times, serif;
-
-    /* Premium shadows */
-    --shadow-paper: 0 1px 3px hsl(0 0% 0% / 0.2), 0 4px 12px hsl(0 0% 0% / 0.3);
-    --shadow-elevated: 0 4px 6px hsl(0 0% 0% / 0.2), 0 12px 24px hsl(0 0% 0% / 0.4);
-    --shadow-product: 0 8px 16px hsl(0 0% 0% / 0.3), 0 32px 64px hsl(0 0% 0% / 0.5);
-
-    /* Grain texture */
-    --grain-opacity: 0.025;
-
-    /* Sidebar fallbacks */
     --sidebar-background: 220 8% 10%;
     --sidebar-foreground: 45 20% 92%;
     --sidebar-primary: 42 45% 52%;
@@ -372,26 +411,6 @@
     --card-preview-muted: rgba(15, 23, 42, 0.5);
   }
 
-  /* Light mode for those who prefer it */
-  .light {
-    --background: 45 20% 96%;
-    --foreground: 220 10% 12%;
-    --card: 45 25% 98%;
-    --card-foreground: 220 10% 12%;
-    --popover: 45 20% 94%;
-    --popover-foreground: 220 10% 12%;
-    --primary: 220 10% 12%;
-    --primary-foreground: 45 20% 96%;
-    --secondary: 45 15% 90%;
-    --secondary-foreground: 220 10% 12%;
-    --muted: 45 10% 85%;
-    --muted-foreground: 220 8% 40%;
-    --accent: 35 60% 45%;
-    --accent-foreground: 45 20% 96%;
-    --border: 45 15% 82%;
-    --input: 45 15% 82%;
-    --ring: 35 60% 45%;
-  }
 }
 
 @layer base {
@@ -515,9 +534,9 @@
     @apply text-sm text-destructive mt-1 flex items-center gap-1;
   }
 
-  /* Panel sections */
+  /* Panel sections - Premium consistent styling */
   .panel-section {
-    @apply p-4 sm:p-6 bg-card border border-border;
+    @apply p-4 sm:p-6 bg-card/30 border border-white/10 rounded-lg backdrop-blur-sm;
   }
 
   /* Card preview wrapper - responsive scaling */

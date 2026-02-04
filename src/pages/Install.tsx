@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Download, Smartphone, CheckCircle, Wifi, Share, Plus, ArrowLeft, Monitor, Sparkles } from 'lucide-react';
+import { Download, Smartphone, CheckCircle, Wifi, Share, Plus, ArrowLeft, Monitor, Sparkles, QrCode } from 'lucide-react';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -19,9 +19,9 @@ export default function Install() {
     const ua = navigator.userAgent;
     setIsIOS(/iPad|iPhone|iPod/.test(ua));
     setIsAndroid(/Android/.test(ua));
-    
+
     // Check if already installed
-    const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches 
+    const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches
       || (window.navigator as Navigator & { standalone?: boolean }).standalone === true;
     setIsStandalone(isInStandaloneMode);
     setIsInstalled(isInStandaloneMode);
@@ -50,10 +50,10 @@ export default function Install() {
 
   const handleInstall = async () => {
     if (!deferredPrompt) return;
-    
+
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
-    
+
     if (outcome === 'accepted') {
       setIsInstalled(true);
     }
@@ -65,11 +65,13 @@ export default function Install() {
       {/* Header */}
       <header className="border-b border-border bg-card/50">
         <div className="container py-6 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
-            <Sparkles className="w-5 h-5 text-accent" />
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 bg-[#c9a961] rounded-md flex items-center justify-center text-black shadow-[0_0_15px_rgba(201,169,97,0.3)] transition-transform group-hover:scale-105">
+              <QrCode className="w-6 h-6" />
+            </div>
             <span className="font-serif text-xl text-foreground">QR Card Studio</span>
           </Link>
-          <Link 
+          <Link
             to="/"
             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
@@ -101,7 +103,7 @@ export default function Install() {
             <p className="text-muted-foreground mb-4">
               QR Card Studio is installed on your device. Open it from your home screen.
             </p>
-            <Link 
+            <Link
               to="/"
               className="btn-primary inline-flex items-center gap-2"
             >
@@ -216,7 +218,7 @@ export default function Install() {
 
         {/* Back to app */}
         <div className="text-center">
-          <Link 
+          <Link
             to="/"
             className="text-accent hover:text-accent/80 transition-colors"
           >

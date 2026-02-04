@@ -27,7 +27,7 @@ export default function Footer({ onAboutClick }: FooterProps) {
               <span className="font-serif text-lg text-foreground">QR Card Studio</span>
             </div>
             <p className="text-sm text-muted-foreground mb-4">
-              Premium QR feedback card generator for businesses 
+              Premium QR feedback card generator for businesses
               that value their customers.
             </p>
             <div className="flex items-center gap-2 text-xs text-success">
@@ -117,11 +117,11 @@ export default function Footer({ onAboutClick }: FooterProps) {
             <p className="text-xs text-muted-foreground text-center md:text-left">
               All data stays in your browser. Nothing is stored or sent to any server.
             </p>
-            
+
             {/* Brand Credit */}
             <p className="text-xs text-muted-foreground/70 flex items-center gap-1.5">
               <Code2 className="w-3.5 h-3.5" />
-              <span>© Codexa — Building privacy-first web products.</span>
+              <span>Created with ❤️ by Bilal • © Codexa</span>
             </p>
           </div>
         </div>

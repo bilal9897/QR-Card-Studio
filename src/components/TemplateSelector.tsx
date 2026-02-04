@@ -8,6 +8,7 @@ import {
 } from '@/lib/templates';
 import { Sparkles, Check, Crown, Globe, ChevronDown, ChevronUp } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState } from 'react';
 
 interface TemplateSelectorProps {
@@ -15,89 +16,60 @@ interface TemplateSelectorProps {
   onSelect: (template: CardTemplate) => void;
 }
 
-interface TemplateSectionProps {
-  title: string;
-  subtitle: string;
+interface TemplateGridProps {
   templates: CardTemplate[];
   selectedId: string | null;
   onSelect: (template: CardTemplate) => void;
-  badge?: 'free' | 'elite' | 'community';
+  description?: string;
 }
 
-function FreeBadge() {
-  return (
-    <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-success/40 text-success bg-success/10">
-      <Check className="w-2.5 h-2.5 mr-0.5" />
-      Free
-    </Badge>
-  );
-}
-
-function CommunityBadge() {
-  return (
-    <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-blue-500/40 text-blue-500 bg-blue-500/10">
-      <Globe className="w-2.5 h-2.5 mr-0.5" />
-      Community
-    </Badge>
-  );
-}
-
-function EliteBadge() {
-  return (
-    <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-accent/40 text-accent bg-accent/10">
-      <Crown className="w-2.5 h-2.5 mr-0.5" />
-      Elite
-    </Badge>
-  );
-}
-
-function TemplateSection({ title, subtitle, templates, selectedId, onSelect, badge = 'free' }: TemplateSectionProps) {
+function TemplateGrid({ templates, selectedId, onSelect, description }: TemplateGridProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const LIMIT = 6;
   const hasMore = templates.length > LIMIT;
   const displayedTemplates = isExpanded ? templates : templates.slice(0, LIMIT);
 
   return (
-    <div className={cn(
-      "p-4 border",
-      badge === 'elite' ? 'border-accent/30 bg-accent/5' : badge === 'community' ? 'border-blue-500/20 bg-blue-500/5' : 'border-success/20'
-    )}>
-      <div className="flex items-center justify-between mb-3">
-        <div>
-          <h3 className="font-medium text-sm text-foreground">{title}</h3>
-          <p className="text-xs text-muted-foreground">{subtitle}</p>
-        </div>
-        {badge === 'elite' ? <EliteBadge /> : badge === 'community' ? <CommunityBadge /> : <FreeBadge />}
-      </div>
+    <div className="space-y-3">
+      {description && (
+        <p className="text-xs text-muted-foreground px-1">{description}</p>
+      )}
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {displayedTemplates.map((template) => (
           <button
             key={template.id}
             type="button"
             onClick={() => onSelect(template)}
             className={cn(
-              'template-card text-left focus-ring p-3',
-              selectedId === template.id && 'active'
+              'group relative flex flex-col items-start p-3 rounded-lg border border-border bg-card/50 hover:bg-card/80 transition-all text-left focus-ring',
+              selectedId === template.id && 'border-accent ring-1 ring-accent bg-accent/5'
             )}
             aria-pressed={selectedId === template.id}
           >
-            {/* Color indicator - shows gradient or accent, with RGB border for elite */}
+            {/* Color indicator */}
             <div
-              className="w-full h-1.5 mb-2 rounded-full"
+              className="w-full h-2 mb-3 rounded-full transition-transform group-hover:scale-[1.02]"
               style={{
                 background: template.colors.borderGradient || template.colors.gradient || template.colors.accent,
-                boxShadow: template.colors.borderGradient ? `0 0 6px ${template.colors.accent}40` : 'none'
+                boxShadow: template.colors.borderGradient ? `0 0 8px ${template.colors.accent}40` : 'none'
               }}
               aria-hidden="true"
             />
 
-            <p className="font-medium text-xs text-foreground truncate">
-              {template.name}
-            </p>
-            <p className="text-[10px] text-muted-foreground truncate">
-              {template.description}
-            </p>
+            <div className="w-full">
+              <p className="font-medium text-xs text-foreground truncate mb-0.5">
+                {template.name}
+              </p>
+              <p className="text-[10px] text-muted-foreground truncate opacity-80">
+                {template.description}
+              </p>
+            </div>
+
+            {/* Selected Indicator */}
+            {selectedId === template.id && (
+              <div className="absolute top-2 right-2 w-2 h-2 bg-accent rounded-full animate-pulse" />
+            )}
           </button>
         ))}
       </div>
@@ -105,16 +77,12 @@ function TemplateSection({ title, subtitle, templates, selectedId, onSelect, bad
       {hasMore && (
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full flex items-center justify-center gap-1.5 mt-3 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors py-1.5"
+          className="w-full flex items-center justify-center gap-1.5 mt-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors py-2 hover:bg-secondary/50 rounded-md"
         >
           {isExpanded ? (
-            <>
-              Show Less <ChevronUp className="w-3.5 h-3.5" />
-            </>
+            <>Show Less <ChevronUp className="w-3.5 h-3.5" /></>
           ) : (
-            <>
-              Show More <ChevronDown className="w-3.5 h-3.5" />
-            </>
+            <>Show More <ChevronDown className="w-3.5 h-3.5" /></>
           )}
         </button>
       )}
@@ -125,56 +93,70 @@ function TemplateSection({ title, subtitle, templates, selectedId, onSelect, bad
 export default function TemplateSelector({ selectedId, onSelect }: TemplateSelectorProps) {
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <Sparkles className="w-4 h-4 text-accent" />
-        <label className="block text-xs font-medium uppercase tracking-widest text-muted-foreground">
+      <div className="flex items-center justify-between px-1">
+        <label className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+          <Sparkles className="w-4 h-4 text-accent" />
           Template Collections
         </label>
+
+        <p className="text-[10px] text-muted-foreground hidden sm:block">
+          Select a design to start
+        </p>
       </div>
 
-      <div className="space-y-3">
-        {/* Community Collection */}
-        <TemplateSection
-          title="Community Collection"
-          subtitle="User submitted designs"
-          templates={communityTemplates}
-          selectedId={selectedId}
-          onSelect={onSelect}
-          badge="community"
-        />
+      <Tabs defaultValue="community" className="w-full">
+        <TabsList className="w-full grid grid-cols-4 bg-muted/50 p-1">
+          <TabsTrigger value="community" className="text-xs">Community</TabsTrigger>
+          <TabsTrigger value="premium" className="text-xs">Premium</TabsTrigger>
+          <TabsTrigger value="luxury" className="text-xs">Luxury</TabsTrigger>
+          <TabsTrigger value="elite" className="text-xs">Elite</TabsTrigger>
+        </TabsList>
 
-        {/* Premium Collection */}
-        <TemplateSection
-          title="Premium Collection"
-          subtitle="Business & social styles"
-          templates={premiumTemplates}
-          selectedId={selectedId}
-          onSelect={onSelect}
-        />
+        <div className="mt-4 bg-card/30 rounded-xl p-1">
+          <TabsContent value="community" className="mt-0 outline-none">
+            <TemplateGrid
+              templates={communityTemplates}
+              selectedId={selectedId}
+              onSelect={onSelect}
+              description="Community-contributed designs for various businesses."
+            />
+          </TabsContent>
 
-        {/* Luxury Collection */}
-        <TemplateSection
-          title="Luxury Collection"
-          subtitle="Dark gradient designs"
-          templates={luxuryTemplates}
-          selectedId={selectedId}
-          onSelect={onSelect}
-        />
+          <TabsContent value="premium" className="mt-0 outline-none">
+            <TemplateGrid
+              templates={premiumTemplates}
+              selectedId={selectedId}
+              onSelect={onSelect}
+              description="Professional styles suitable for corporate & business use."
+            />
+          </TabsContent>
 
-        {/* Elite Collection */}
-        <TemplateSection
-          title="Elite Collection"
-          subtitle="RGB border premium"
-          templates={eliteTemplates}
-          selectedId={selectedId}
-          onSelect={onSelect}
-          badge="elite"
-        />
+          <TabsContent value="luxury" className="mt-0 outline-none">
+            <TemplateGrid
+              templates={luxuryTemplates}
+              selectedId={selectedId}
+              onSelect={onSelect}
+              description="High-end, elegant designs with rich gradients."
+            />
+          </TabsContent>
+
+          <TabsContent value="elite" className="mt-0 outline-none">
+            <TemplateGrid
+              templates={eliteTemplates}
+              selectedId={selectedId}
+              onSelect={onSelect}
+              description="Exclusive designs with RGB border effects."
+            />
+          </TabsContent>
+        </div>
+      </Tabs>
+
+      <div className="flex items-center gap-2 justify-center pt-2">
+        <Badge variant="outline" className="text-[10px] h-5 border-success/30 text-success bg-success/5">
+          <Check className="w-3 h-3 mr-1" /> All Free
+        </Badge>
+        <span className="text-[10px] text-muted-foreground">HD Export • Print Ready</span>
       </div>
-
-      <p className="text-xs text-success font-medium">
-        ✓ All templates and exports are 100% free — HD PNG & Print-Ready PDF
-      </p>
     </div>
   );
 }
