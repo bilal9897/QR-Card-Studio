@@ -45,6 +45,11 @@ textarea {
   user-select: text;
 }
 
+/* Safe area for iOS devices with notches */
+.safe-area-inset-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 /* Premium Dark Editorial Design System for QR Card Studio */
 
 @layer base {

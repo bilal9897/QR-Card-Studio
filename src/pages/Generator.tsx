@@ -22,7 +22,7 @@ import ColorCustomizer from '@/components/ColorCustomizer';
 import LanguageSelector from '@/components/LanguageSelector';
 import AboutModal from '@/components/AboutModal';
 import Footer from '@/components/Footer';
-import MobileNav from '@/components/MobileNav';
+import BottomNav from '@/components/BottomNav';
 import InstallBanner from '@/components/InstallBanner';
 import { EmailShare } from '@/components/EmailShare';
 
@@ -512,13 +512,12 @@ export default function Generator() {
             <PWAInstallButton />
             <OfflineBadge />
             <ThemeToggle />
-            <MobileNav onAboutClick={() => setShowAboutModal(true)} />
           </div>
         </div>
       </header>
 
       {/* Main content */}
-      <main id="create" className="container py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8">
+      <main id="create" className="container py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 pb-20 md:pb-8">
         {/* Desktop max-width wrapper for balanced layout */}
         <div className="lg:max-w-6xl lg:mx-auto">
           {/* Hero - refined container */}
@@ -1106,6 +1105,9 @@ export default function Generator() {
           />
         )
       }
+
+      {/* Mobile Bottom Navigation */}
+      <BottomNav onAboutClick={() => setShowAboutModal(true)} />
     </div >
   );
 }
