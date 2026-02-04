@@ -11,6 +11,8 @@ import About from "./pages/About";
 import PrintPreview from "./pages/PrintPreview";
 import Install from "./pages/Install";
 import NotFound from "./pages/NotFound";
+import RedirectHandler from "./pages/RedirectHandler"; // Added import
+import AnalyticsDashboard from "./pages/AnalyticsDashboard"; // Added import
 
 const queryClient = new QueryClient();
 
@@ -31,6 +33,9 @@ const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/print-preview" element={<PrintPreview />} />
             <Route path="/install" element={<Install />} />
+            {/* ADDED NEW ROUTES */}
+            <Route path="/r/:id" element={<RedirectHandler />} />
+            <Route path="/analytics/:id" element={<AnalyticsDashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

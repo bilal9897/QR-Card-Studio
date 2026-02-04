@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { toPng } from 'html-to-image';
 import TiltWrapper from '@/components/TiltWrapper';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { Download, Sparkles, AlertCircle, FileText, ChevronDown, Printer, Check, Maximize2, Layers, FolderOpen, QrCode } from 'lucide-react';
+import { Download, Sparkles, AlertCircle, FileText, ChevronDown, Printer, Check, Maximize2, Layers, FolderOpen, QrCode, BarChart3 } from 'lucide-react';
 import CardPreview, { type CardFormat, getPrintSize } from '@/components/CardPreview';
 import FormatSelector from '@/components/FormatSelector';
 import SizeSelector, { type CardSize } from '@/components/SizeSelector';
@@ -31,6 +31,9 @@ import PrintSizePreview from '@/components/PrintSizePreview';
 import KeyboardShortcutsHelp from '@/components/KeyboardShortcutsHelp';
 import PWAInstallButton from '@/components/PWAInstallButton';
 import QRTypeSelector from '@/components/QRTypeSelector';
+import { Switch } from "@/components/ui/switch";
+import { createTrackedCard, logDownload } from "@/lib/firebase";
+import { Loader2 } from "lucide-react";
 import AIMessageGenerator from '@/components/AIMessageGenerator';
 import AnalyticsBuilder from '@/components/AnalyticsBuilder';
 import BatchGenerator from '@/components/BatchGenerator';
@@ -101,7 +104,10 @@ export default function Generator() {
   const [showShortcutsHelp, setShowShortcutsHelp] = useState(false);
   const [showBatchGenerator, setShowBatchGenerator] = useState(false);
   const [showAIGenerator, setShowAIGenerator] = useState(false);
-  const [showAnalytics, setShowAnalytics] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(true);
+  const [trackedId, setTrackedId] = useState<string | null>(null);
+  const [isGeneratingLink, setIsGeneratingLink] = useState(false);
+  const [userInputUrl, setUserInputUrl] = useState(''); // Separate input state from QR output
   const [showSavedDesigns, setShowSavedDesigns] = useState(false);
 
   // Load Design Handler
@@ -320,6 +326,11 @@ export default function Generator() {
         backgroundColor: hasRgbBorder ? undefined : cardColors.background,
       });
 
+      // Log download if tracking is enabled
+      if (trackedId) {
+        logDownload(trackedId).catch(console.error);
+      }
+
       const safeName = cleanInput(businessName).replace(/[^a-zA-Z0-9]/g, '-') || 'qr-card';
       const link = document.createElement('a');
       link.download = `${safeName}-${format}-${size}-hd.png`;
@@ -425,6 +436,11 @@ export default function Generator() {
         hasRgbBorder,
       });
 
+      // Log download if tracking is enabled
+      if (trackedId) {
+        logDownload(trackedId).catch(console.error);
+      }
+
       toast({
         title: 'PDF exported',
         description: 'Your print-ready PDF with crop marks is ready.',
@@ -468,6 +484,48 @@ export default function Generator() {
   };
 
   const pdfPageSize = getPDFPageSize(format, size, includeBleed, includeCropMarks);
+
+  // Auto-tracking Effect
+  useEffect(() => {
+    // If not URL type, skip
+    if (qrType !== 'url') return;
+
+    // If analytics disabled, just sync input to QR data directly
+    if (!showAnalytics) {
+      setQRData({ ...qrData, url: userInputUrl } as any);
+      return;
+    }
+
+    // If URL is empty, clear everything
+    if (!userInputUrl) {
+      setQRData({ ...qrData, url: '' } as any);
+      setTrackedId(null);
+      return;
+    }
+
+    // Debounce tracking creation
+    const timer = setTimeout(async () => {
+      try {
+        setIsGeneratingLink(true);
+        // Only create new track ID if URL changed significantly or no ID exists
+        // For MVP: Re-create on any debounce settle (could be optimized, but safer for consistency)
+        const id = await createTrackedCard(userInputUrl, businessName || 'Untitled Card');
+        const shortUrl = `${window.location.origin}/r/${id}`;
+
+        setQRData({ ...qrData, url: shortUrl } as any);
+        setTrackedId(id);
+      } catch (e) {
+        console.error("Tracking Error:", e);
+        // Fallback to raw URL on error
+        setQRData({ ...qrData, url: userInputUrl } as any);
+      } finally {
+        setIsGeneratingLink(false);
+      }
+    }, 1500); // 1.5s debounce
+
+    return () => clearTimeout(timer);
+  }, [userInputUrl, showAnalytics, qrType]); // Depend on businessName to update title if it changes? Maybe too frequent.
+
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0a0a0a] text-foreground transition-colors duration-300 selection:bg-[#c9a961] selection:text-black">
@@ -696,12 +754,18 @@ export default function Generator() {
                       <div className="flex-1 min-w-0">
                         <QRTypeSelector
                           selectedType={qrType}
-                          qrData={qrData}
+                          qrData={qrType === 'url' ? { ...qrData, url: userInputUrl } : qrData}
                           onTypeChange={(type) => {
                             setQRType(type);
                             setTouched({ ...touched, feedbackUrl: false });
                           }}
-                          onDataChange={setQRData}
+                          onDataChange={(newData) => {
+                            if (qrType === 'url') {
+                              setUserInputUrl(newData.url || '');
+                            } else {
+                              setQRData(newData);
+                            }
+                          }}
                         />
                       </div>
 
@@ -747,27 +811,64 @@ export default function Generator() {
                 </div>
 
 
-                {/* Analytics Builder Toggle */}
-                {qrType === 'url' && (qrData as any).url && (
-                  <div>
-                    <button
-                      type="button"
-                      onClick={() => setShowAnalytics(!showAnalytics)}
-                      className="w-full flex items-center justify-between p-3 bg-secondary/50 border border-border rounded-lg hover:bg-secondary/70 transition-colors text-sm"
-                    >
-                      <span className="flex items-center gap-2">
-                        <Sparkles className="w-4 h-4 text-accent" />
-                        <span className="font-medium">Add Analytics Tracking</span>
-                      </span>
-                      <ChevronDown className={`w-4 h-4 transition-transform ${showAnalytics ? 'rotate-180' : ''}`} />
-                    </button>
+                {/* Smart Analytics Toggle */}
+                {qrType === 'url' && (
+                  <div className="rounded-lg border border-border bg-card/30 overflow-hidden transition-all duration-300">
+                    <div className="p-4 flex items-center justify-between">
+                      <div className="space-y-1">
+                        <label htmlFor="smart-analytics" className="text-sm font-medium flex items-center gap-2">
+                          <BarChart3 className="w-4 h-4 text-accent" /> Smart Analytics
+                        </label>
+                        <p className="text-xs text-muted-foreground">Track scans & downloads in real-time</p>
+                      </div>
+                      <Switch
+                        id="smart-analytics"
+                        checked={showAnalytics} // Using existing state for toggle
+                        onCheckedChange={async (checked) => {
+                          setShowAnalytics(checked);
+                          if (checked && (qrData as any).url) {
+                            setIsGeneratingLink(true);
+                            try {
+                              // Create tracking link
+                              const id = await createTrackedCard((qrData as any).url, businessName || 'Untitled Card');
+                              const shortUrl = `${window.location.origin}/r/${id}`;
 
-                    {showAnalytics && (
-                      <div className="mt-3 p-4 bg-secondary/30 border border-border rounded-lg animate-fade-in">
-                        <AnalyticsBuilder
-                          baseUrl={(qrData as any).url}
-                          businessName={businessName}
-                        />
+                              // Update QR Data to use short link
+                              setQRData({ ...qrData, url: shortUrl } as any);
+                              setTrackedId(id);
+                            } catch (e) {
+                              console.error(e);
+                              // toast error (add toast later)
+                            } finally {
+                              setIsGeneratingLink(false);
+                            }
+                          } else {
+                            // Revert to original? (Ideally we store originalUrl separately, but for MVP we might lose it if not careful. 
+                            // For now, let's just untoggle. User has to re-enter URL if they want raw.)
+                            setTrackedId(null);
+                          }
+                        }}
+                      />
+                    </div>
+
+                    {showAnalytics && trackedId && (
+                      <div className="px-4 pb-4 animate-fade-in space-y-3">
+                        <div className="p-3 bg-accent/10 border border-accent/20 rounded-md space-y-2">
+                          <div className="flex items-center gap-2 text-sm text-accent">
+                            {isGeneratingLink ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                            <span className="font-medium">Tracking Active</span>
+                          </div>
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-muted-foreground">Dashboard:</span>
+                            <Link to={`/analytics/${trackedId}`} target="_blank" className="hover:underline flex items-center gap-1">
+                              View Stats <Maximize2 className="w-3 h-3" />
+                            </Link>
+                          </div>
+                        </div>
+
+                        <p className="text-[10px] text-muted-foreground">
+                          QR Code now points to a short link. Scans will be logged before redirecting.
+                        </p>
                       </div>
                     )}
                   </div>
