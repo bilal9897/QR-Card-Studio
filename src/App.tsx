@@ -15,6 +15,7 @@ const Install = lazy(() => import("./pages/Install"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const RedirectHandler = lazy(() => import("./pages/RedirectHandler"));
 const AnalyticsDashboard = lazy(() => import("./pages/AnalyticsDashboard"));
+const Debug = lazy(() => import("./pages/Debug")); // Diagnostic Tool
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => {
               <Route path="/about" element={<About />} />
               <Route path="/print-preview" element={<PrintPreview />} />
               <Route path="/install" element={<Install />} />
+              <Route path="/debug" element={<Debug />} />
               <Route path="/r/:id" element={<RedirectHandler />} />
               <Route path="/analytics/:id" element={<AnalyticsDashboard />} />
               <Route path="*" element={<NotFound />} />
