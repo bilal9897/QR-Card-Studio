@@ -12,8 +12,8 @@ export default function FormatSelector({ selected, onSelect }: FormatSelectorPro
       <label className="block text-xs font-medium uppercase tracking-widest text-muted-foreground">
         Card Format
       </label>
-      
-      <div className="grid grid-cols-2 gap-4">
+
+      <div className="grid grid-cols-3 gap-4">
         {/* Table Tent Option */}
         <button
           type="button"
@@ -51,6 +51,29 @@ export default function FormatSelector({ selected, onSelect }: FormatSelectorPro
             </div>
           </div>
           <span className="text-sm font-medium">Square</span>
+        </button>
+
+        {/* Dual QR Option */}
+        <button
+          type="button"
+          onClick={() => onSelect('dual-qr')}
+          className={cn(
+            'format-option p-4 flex flex-col items-center gap-3 focus-ring',
+            selected === 'dual-qr' && 'active'
+          )}
+          aria-pressed={selected === 'dual-qr'}
+        >
+          {/* Miniature preview */}
+          <div className="w-12 h-18 border-2 border-current opacity-60" style={{ height: '72px' }}>
+            <div className="w-full h-full flex flex-col items-center justify-between p-2">
+              <div className="flex gap-1">
+                <div className="w-3 h-3 border border-current" />
+                <div className="w-3 h-3 border border-current" />
+              </div>
+              <div className="w-6 h-0.5 bg-current opacity-40" />
+            </div>
+          </div>
+          <span className="text-sm font-medium">Dual QR</span>
         </button>
       </div>
     </div>

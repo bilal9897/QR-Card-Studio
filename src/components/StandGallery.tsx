@@ -40,7 +40,7 @@ export default function StandGallery() {
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
 
   return (
-    <section 
+    <section
       className="py-16 lg:py-24 bg-secondary/30"
       aria-labelledby="gallery-heading"
     >
@@ -50,14 +50,14 @@ export default function StandGallery() {
           <p className="text-xs uppercase tracking-widest text-accent mb-3">
             Real World Usage
           </p>
-          <h2 
+          <h2
             id="gallery-heading"
             className="font-serif text-display-sm md:text-display-md text-foreground mb-4"
           >
             How it looks in <span className="italic">real life</span>
           </h2>
           <p className="text-muted-foreground">
-            Premium QR feedback stands designed to blend seamlessly 
+            Premium QR feedback stands designed to blend seamlessly
             with your business environment.
           </p>
         </div>
@@ -65,20 +65,21 @@ export default function StandGallery() {
         {/* Gallery Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-12">
           {galleryItems.map((item) => (
-            <figure 
+            <figure
               key={item.id}
-              className="group relative overflow-hidden bg-card border border-border"
+              className="group relative overflow-hidden bg-card border border-border/50 rounded-2xl shadow-sm hover:shadow-xl hover:border-accent/40 transition-all duration-500 hover:-translate-y-1"
             >
               <div className="aspect-square overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
                 <img
                   src={item.image}
                   alt={item.alt}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   loading="lazy"
                 />
               </div>
-              <figcaption className="p-3 lg:p-4 text-center">
-                <p className="text-sm text-foreground font-medium">
+              <figcaption className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20">
+                <p className="text-sm text-white font-medium drop-shadow-md">
                   {item.caption}
                 </p>
               </figcaption>
@@ -92,7 +93,7 @@ export default function StandGallery() {
             Want these stands printed or ordered in bulk?
           </p>
           <p className="text-sm text-muted-foreground mb-6">
-            Get custom-branded QR stands, acrylic displays, or bulk feedback cards 
+            Get custom-branded QR stands, acrylic displays, or bulk feedback cards
             for your business.
           </p>
           <a

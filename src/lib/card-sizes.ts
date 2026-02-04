@@ -3,7 +3,7 @@
  */
 
 export type CardSize = 'small' | 'medium' | 'large' | 'custom';
-export type CardFormat = 'table-tent' | 'square';
+export type CardFormat = 'table-tent' | 'square' | 'dual-qr';
 export type SizeUnit = 'mm' | 'inch' | 'px';
 
 interface SizeConfig {
@@ -116,11 +116,55 @@ export const squareTokens: Record<Exclude<CardSize, 'custom'>, CardSizeTokens> =
   },
 };
 
+// Dual QR token configurations (Vertical split)
+export const dualTokens: Record<Exclude<CardSize, 'custom'>, CardSizeTokens> = {
+  small: {
+    cardWidth: 200,
+    cardHeight: 320,
+    padding: 16,
+    titleSize: 14,
+    bodySize: 9,
+    ctaSize: 7,
+    qrSize: 60, // Smaller QRs to fit two
+    qrPadding: 6,
+    logoMaxHeight: 20,
+    logoMaxWidth: 40,
+    spacing: 8,
+  },
+  medium: {
+    cardWidth: 260,
+    cardHeight: 400,
+    padding: 24,
+    titleSize: 18,
+    bodySize: 11,
+    ctaSize: 9,
+    qrSize: 75,
+    qrPadding: 8,
+    logoMaxHeight: 28,
+    logoMaxWidth: 56,
+    spacing: 12,
+  },
+  large: {
+    cardWidth: 320,
+    cardHeight: 500,
+    padding: 32,
+    titleSize: 22,
+    bodySize: 14,
+    ctaSize: 11,
+    qrSize: 90,
+    qrPadding: 10,
+    logoMaxHeight: 36,
+    logoMaxWidth: 72,
+    spacing: 16,
+  },
+};
+
 /**
  * Get base aspect ratio for a format
  */
 export function getFormatAspectRatio(format: CardFormat): number {
-  return format === 'table-tent' ? 2 / 3 : 1; // width / height
+  if (format === 'square') return 1;
+  return 2 / 3; // table-tent & dual-qr (portrait)
 }
 
 /**
@@ -136,48 +180,48 @@ export function getSizeTokens(
   if (size === 'custom' && customSize) {
     const widthInches = convertToInches(customSize.width, customSize.unit);
     const heightInches = convertToInches(customSize.height, customSize.unit);
-    
+
     // Use medium preset as base reference
-    const baseTokens = format === 'table-tent' ? tableTentTokens.medium : squareTokens.medium;
-    const refWidth = format === 'table-tent' ? 3.2 : 3.6;
-    const refHeight = format === 'table-tent' ? 4.8 : 3.6;
-    
+    const baseTokens = format === 'square' ? squareTokens.medium : tableTentTokens.medium;
+    const refWidth = format === 'square' ? 3.6 : 3.2;
+    const refHeight = format === 'square' ? 3.6 : 4.8;
+
     // Calculate scale based on the smaller dimension ratio to prevent overflow
     const widthRatio = widthInches / refWidth;
     const heightRatio = heightInches / refHeight;
     const scaleRatio = Math.min(widthRatio, heightRatio);
     const clampedRatio = Math.max(0.6, Math.min(scaleRatio, 1.5));
-    
+
     // Calculate preview dimensions preserving custom aspect ratio
     const customAspectRatio = widthInches / heightInches;
-    
+
     // Constrain to fit in 320px max width, 420px max height for container fit
     const maxPreviewWidth = 320;
     const maxPreviewHeight = 420;
     const minPreviewHeight = 180;
-    
+
     // Start with scaled dimensions
     let previewWidth = baseTokens.cardWidth * widthRatio;
     let previewHeight = baseTokens.cardHeight * heightRatio;
-    
+
     // Constrain width first
     if (previewWidth > maxPreviewWidth) {
       previewWidth = maxPreviewWidth;
       previewHeight = previewWidth / customAspectRatio;
     }
-    
+
     // Then constrain height if needed
     if (previewHeight > maxPreviewHeight) {
       previewHeight = maxPreviewHeight;
       previewWidth = previewHeight * customAspectRatio;
     }
-    
+
     // Ensure minimum size
     if (previewHeight < minPreviewHeight) {
       previewHeight = minPreviewHeight;
       previewWidth = previewHeight * customAspectRatio;
     }
-    
+
     return {
       cardWidth: Math.round(previewWidth),
       cardHeight: Math.round(previewHeight),
@@ -192,9 +236,11 @@ export function getSizeTokens(
       spacing: Math.round(baseTokens.spacing * clampedRatio),
     };
   }
-  
+
   const presetSize = size === 'custom' ? 'medium' : size;
-  return format === 'table-tent' ? tableTentTokens[presetSize] : squareTokens[presetSize];
+  if (format === 'square') return squareTokens[presetSize];
+  if (format === 'dual-qr') return dualTokens[presetSize];
+  return tableTentTokens[presetSize];
 }
 
 export interface CustomSize {
@@ -208,6 +254,13 @@ export const tableTentSizes: Record<Exclude<CardSize, 'custom'>, SizeConfig> = {
   small: { width: 2.5, height: 3.8, label: 'Small', scale: 0.8 },
   medium: { width: 3.2, height: 4.8, label: 'Medium', scale: 1 },
   large: { width: 4, height: 6, label: 'Large', scale: 1.25 },
+};
+
+// Dual QR size configurations (Same physical approx as table tent, usually)
+export const dualSizes: Record<Exclude<CardSize, 'custom'>, SizeConfig> = {
+  small: { width: 3, height: 5, label: 'Small', scale: 0.8 },
+  medium: { width: 4, height: 6, label: 'Medium', scale: 1 },
+  large: { width: 5, height: 7, label: 'Large', scale: 1.25 },
 };
 
 // Square size configurations
@@ -260,18 +313,18 @@ export function convertFromInches(inches: number, unit: SizeUnit): number {
  * Get size config for a format and size (handles custom sizes)
  */
 export function getSizeConfig(
-  format: CardFormat, 
-  size: CardSize, 
+  format: CardFormat,
+  size: CardSize,
   customSize?: CustomSize
 ): SizeConfig {
   if (size === 'custom' && customSize) {
     const widthInches = convertToInches(customSize.width, customSize.unit);
     const heightInches = convertToInches(customSize.height, customSize.unit);
-    
+
     // Calculate scale based on medium size reference
-    const referenceWidth = format === 'table-tent' ? 3.2 : 3.6;
+    const referenceWidth = format === 'square' ? 3.6 : 3.2;
     const scale = Math.min(widthInches / referenceWidth, 1.5);
-    
+
     return {
       width: widthInches,
       height: heightInches,
@@ -279,9 +332,11 @@ export function getSizeConfig(
       scale: Math.max(0.6, Math.min(scale, 1.5)),
     };
   }
-  
+
   const presetSize = size === 'custom' ? 'medium' : size;
-  return format === 'table-tent' ? tableTentSizes[presetSize] : squareSizes[presetSize];
+  if (format === 'square') return squareSizes[presetSize];
+  if (format === 'dual-qr') return dualSizes[presetSize];
+  return tableTentSizes[presetSize];
 }
 
 /**
@@ -290,19 +345,19 @@ export function getSizeConfig(
 export function validateCustomSize(customSize: CustomSize): { valid: boolean; error?: string } {
   const widthInches = convertToInches(customSize.width, customSize.unit);
   const heightInches = convertToInches(customSize.height, customSize.unit);
-  
+
   if (customSize.width <= 0 || customSize.height <= 0) {
     return { valid: false, error: 'Dimensions must be positive' };
   }
-  
+
   if (widthInches < SIZE_LIMITS.minWidth || heightInches < SIZE_LIMITS.minHeight) {
     return { valid: false, error: `Minimum size: ${SIZE_LIMITS.minWidth}" × ${SIZE_LIMITS.minHeight}" for scannable QR` };
   }
-  
+
   if (widthInches > SIZE_LIMITS.maxWidth || heightInches > SIZE_LIMITS.maxHeight) {
     return { valid: false, error: `Maximum size: ${SIZE_LIMITS.maxWidth}" × ${SIZE_LIMITS.maxHeight}" for print safety` };
   }
-  
+
   return { valid: true };
 }
 
@@ -310,7 +365,7 @@ export function validateCustomSize(customSize: CustomSize): { valid: boolean; er
  * Get print size string (e.g. '3.2" × 4.8"')
  */
 export function getPrintSizeLabel(
-  format: CardFormat, 
+  format: CardFormat,
   size: CardSize,
   customSize?: CustomSize
 ): string {
@@ -322,8 +377,8 @@ export function getPrintSizeLabel(
  * Get pixel dimensions at a given DPI
  */
 export function getPixelDimensions(
-  format: CardFormat, 
-  size: CardSize, 
+  format: CardFormat,
+  size: CardSize,
   dpi: number = 96,
   customSize?: CustomSize
 ): { width: number; height: number } {
@@ -338,10 +393,16 @@ export function getPixelDimensions(
  * Get default custom size for a format
  */
 export function getDefaultCustomSize(format: CardFormat, unit: SizeUnit = 'inch'): CustomSize {
-  const baseSize = format === 'table-tent' 
-    ? { width: 3.2, height: 4.8 }
-    : { width: 3.6, height: 3.6 };
-  
+  const baseSize = format === 'square'
+    ? { width: 3.6, height: 3.6 }
+    : { width: 3.2, height: 4.8 }; // Default for table-tent and dual-qr
+
+  if (format === 'dual-qr') {
+    // maybe slightly larger for dual?
+    baseSize.width = 4;
+    baseSize.height = 6;
+  }
+
   return {
     width: convertFromInches(baseSize.width, unit),
     height: convertFromInches(baseSize.height, unit),

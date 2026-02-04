@@ -51,7 +51,7 @@ export default function InputField({
           {required && <span className="text-destructive ml-1" aria-label="required">*</span>}
         </label>
         {maxLength && (
-          <span 
+          <span
             className={cn(
               "text-xs",
               value.length > maxLength * 0.9 ? "text-destructive" : "text-muted-foreground/60"
@@ -65,14 +65,14 @@ export default function InputField({
 
       <div className="relative">
         {multiline ? (
-        <textarea
+          <textarea
             id={id}
             value={value}
             onChange={(e) => onChange(e.target.value)}
             onBlur={onBlur}
             placeholder={placeholder}
             maxLength={maxLength}
-            className={cn(sharedClasses, 'resize-none min-h-[80px] pr-8')}
+            className={cn(sharedClasses, 'resize-none min-h-[60px] pr-8')}
             required={required}
             aria-invalid={hasError}
             aria-describedby={hasError ? `${id}-error` : hint ? `${id}-hint` : undefined}
@@ -92,7 +92,7 @@ export default function InputField({
             aria-describedby={hasError ? `${id}-error` : hint ? `${id}-hint` : undefined}
           />
         )}
-        
+
         {/* Validation icon */}
         {showValidation && value.length > 0 && (
           <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none">

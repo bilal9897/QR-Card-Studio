@@ -45,7 +45,8 @@ export default function PrintPreview() {
       generateQRCode(feedbackUrl, {
         width: 400,
         margin: 0,
-        color: { dark: colors.qrColor, light: colors.background }
+        color: { dark: colors.qrColor, light: colors.background },
+        dotStyle: 'dots' // Circular dots for branded look
       }).then(setQrCodeUrl).catch(() => setQrCodeUrl(''));
     }
   }, [feedbackUrl, colors.qrColor, colors.background]);
@@ -105,7 +106,7 @@ export default function PrintPreview() {
             <div className="h-4 w-px bg-neutral-300" />
             <h1 className="text-lg font-medium text-neutral-900">Print Preview</h1>
           </div>
-          
+
           <div className="flex items-center gap-3">
             <button
               onClick={handleDownload}
@@ -139,7 +140,7 @@ export default function PrintPreview() {
       <main className="py-12 px-6 print:p-0 print:m-0">
         <div className="max-w-4xl mx-auto flex flex-col items-center print:max-w-none">
           {/* Paper simulation - hidden when printing */}
-          <div 
+          <div
             className="bg-white shadow-2xl p-8 print:shadow-none print:p-0"
             style={{ minWidth: widthPx + 64 }}
           >
@@ -154,15 +155,15 @@ export default function PrintPreview() {
             >
               {/* RGB Border layer for Elite templates */}
               {hasRgbBorder && (
-                <div 
+                <div
                   className="absolute inset-0"
                   style={{ background: colors.borderGradient }}
                   aria-hidden="true"
                 />
               )}
-              
+
               {/* Main card content with solid background */}
-              <div 
+              <div
                 className="absolute overflow-hidden"
                 style={{
                   top: hasRgbBorder ? '2px' : '0',
@@ -176,7 +177,7 @@ export default function PrintPreview() {
               >
                 {/* Regular border for non-RGB templates */}
                 {!hasRgbBorder && (
-                  <div 
+                  <div
                     className="absolute inset-0 pointer-events-none"
                     style={{ border: `1px solid ${colors.text}20` }}
                   />
@@ -189,27 +190,27 @@ export default function PrintPreview() {
                         <img src={logoUrl} alt="" className="max-h-12 max-w-24 object-contain" />
                       </div>
                     )}
-                    <h2 
+                    <h2
                       className="font-serif text-center leading-tight mb-3"
                       style={{ fontSize: '1.5rem', color: colors.text }}
                     >
                       {businessName}
                     </h2>
-                    <p 
+                    <p
                       className="text-center leading-relaxed mb-auto"
                       style={{ fontSize: '0.875rem', color: colors.text, opacity: 0.8 }}
                     >
                       {message}
                     </p>
                     <div className="flex flex-col items-center mt-4">
-                      <div 
+                      <div
                         className="p-2"
                         style={{ backgroundColor: colors.background, border: `1px solid ${colors.text}20` }}
                       >
                         {qrCodeUrl ? (
                           <img src={qrCodeUrl} alt="QR Code" style={{ width: '120px', height: '120px' }} />
                         ) : (
-                          <div 
+                          <div
                             className="flex items-center justify-center"
                             style={{ width: '120px', height: '120px', backgroundColor: `${colors.text}10` }}
                           >
@@ -217,7 +218,7 @@ export default function PrintPreview() {
                           </div>
                         )}
                       </div>
-                      <p 
+                      <p
                         className="font-medium uppercase tracking-widest mt-3"
                         style={{ fontSize: '0.65rem', color: colors.text }}
                       >
@@ -233,14 +234,14 @@ export default function PrintPreview() {
                       ) : (
                         <div style={{ width: '32px', height: '32px' }} />
                       )}
-                      <h2 
+                      <h2
                         className="font-serif text-right leading-tight"
                         style={{ fontSize: '1.1rem', maxWidth: '60%', color: colors.text }}
                       >
                         {businessName}
                       </h2>
                     </div>
-                    <p 
+                    <p
                       className="leading-relaxed flex-1"
                       style={{ fontSize: '0.75rem', color: colors.text, opacity: 0.8 }}
                     >
@@ -248,21 +249,21 @@ export default function PrintPreview() {
                     </p>
                     <div className="flex items-end justify-between mt-3">
                       <div className="flex-1 pr-3">
-                        <p 
+                        <p
                           className="font-medium uppercase tracking-widest"
                           style={{ fontSize: '0.55rem', color: colors.text }}
                         >
                           {ctaText}
                         </p>
                       </div>
-                      <div 
+                      <div
                         className="p-1.5"
                         style={{ backgroundColor: colors.background, border: `1px solid ${colors.text}20` }}
                       >
                         {qrCodeUrl ? (
                           <img src={qrCodeUrl} alt="QR Code" style={{ width: '80px', height: '80px' }} />
                         ) : (
-                          <div 
+                          <div
                             className="flex items-center justify-center"
                             style={{ width: '80px', height: '80px', backgroundColor: `${colors.text}10` }}
                           >

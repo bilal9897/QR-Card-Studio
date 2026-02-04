@@ -86,8 +86,8 @@
     --print-border: 45 15% 85%;
 
     /* Typography tokens */
-    --font-display: 'Instrument Serif', Georgia, serif;
-    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-display: 'Times New Roman', Times, serif;
+    --font-body: 'Times New Roman', Times, serif;
 
     /* Premium shadows */
     --shadow-paper: 0 1px 3px hsl(0 0% 0% / 0.2), 0 4px 12px hsl(0 0% 0% / 0.3);
@@ -161,6 +161,15 @@
     --card-preview-accent: #c88b78;
     --card-preview-border: rgba(74, 63, 58, 0.12);
     --card-preview-muted: rgba(74, 63, 58, 0.6);
+  }
+
+  /* Noir Luxe (New Flagship) */
+  [data-theme="noir-luxe"] {
+    --card-preview-bg: #050505;
+    --card-preview-text: #ffffff;
+    --card-preview-accent: #ededed;
+    --card-preview-border: rgba(255, 255, 255, 0.15);
+    --card-preview-muted: rgba(255, 255, 255, 0.6);
   }
 
   /* Midnight Gold (Elite - Flagship) */
@@ -271,22 +280,96 @@
     --card-preview-muted: rgba(255, 245, 235, 0.6);
   }
 
-  /* Aqua Teal (RGB) */
-  [data-theme="aqua-teal"] {
-    --card-preview-bg: #0a1214;
-    --card-preview-text: #e0f7fa;
-    --card-preview-accent: #14b8a6;
-    --card-preview-border: rgba(20, 184, 166, 0.2);
-    --card-preview-muted: rgba(224, 247, 250, 0.6);
+  /* Slate & Silver (Luxury) */
+  [data-theme="slate-silver"] {
+    --card-preview-bg: #1e293b;
+    --card-preview-text: #f8fafc;
+    --card-preview-accent: #e2e8f0;
+    --card-preview-border: rgba(226, 232, 240, 0.15);
+    --card-preview-muted: rgba(248, 250, 252, 0.6);
   }
 
-  /* Magenta Fusion (RGB) */
-  [data-theme="magenta-fusion"] {
-    --card-preview-bg: #0d0a0d;
-    --card-preview-text: #fdf0fd;
-    --card-preview-accent: #ec4899;
-    --card-preview-border: rgba(236, 72, 153, 0.2);
-    --card-preview-muted: rgba(253, 240, 253, 0.6);
+  /* Arctic White (Luxury) */
+  [data-theme="arctic-white"] {
+    --card-preview-bg: #ffffff;
+    --card-preview-text: #0f172a;
+    --card-preview-accent: #0f172a;
+    --card-preview-border: rgba(15, 23, 42, 0.08);
+    --card-preview-muted: rgba(15, 23, 42, 0.5);
+  }
+
+  /* Royal Sapphire (Luxury) */
+  [data-theme="royal-sapphire"] {
+    --card-preview-bg: #0f172a;
+    --card-preview-text: #e2e8f0;
+    --card-preview-accent: #38bdf8;
+    --card-preview-border: rgba(56, 189, 248, 0.2);
+    --card-preview-muted: rgba(226, 232, 240, 0.6);
+  }
+
+  /* Crimson Velvet (Luxury) */
+  [data-theme="crimson-velvet"] {
+    --card-preview-bg: #450a0a;
+    --card-preview-text: #ffe4e6;
+    --card-preview-accent: #fb7185;
+    --card-preview-border: rgba(251, 113, 133, 0.2);
+    --card-preview-muted: rgba(255, 228, 230, 0.6);
+  }
+
+  /* Amethyst Glow (Luxury) */
+  [data-theme="amethyst-glow"] {
+    --card-preview-bg: #2e1065;
+    --card-preview-text: #f3e8ff;
+    --card-preview-accent: #c084fc;
+    --card-preview-border: rgba(192, 132, 252, 0.2);
+    --card-preview-muted: rgba(243, 232, 255, 0.6);
+  }
+
+  /* Emerald Prestige (Elite) */
+  [data-theme="emerald-prestige"] {
+    --card-preview-bg: #022c22;
+    --card-preview-text: #ecfccb;
+    --card-preview-accent: #10b981;
+    --card-preview-border: rgba(16, 185, 129, 0.3);
+    --card-preview-muted: rgba(236, 252, 203, 0.6);
+  }
+
+  /* Platinum Horizon (Elite) */
+  [data-theme="platinum-horizon"] {
+    --card-preview-bg: #e2e8f0;
+    --card-preview-text: #0f172a;
+    --card-preview-accent: #64748b;
+    --card-preview-border: rgba(100, 116, 139, 0.3);
+    --card-preview-muted: rgba(15, 23, 42, 0.6);
+  }
+
+  /* Carbon Executive (Ultra-Luxury) */
+  [data-theme="carbon-executive"] {
+    --card-preview-bg: #18181b;
+    --card-preview-text: #e4e4e7;
+    --card-preview-accent: #a1a1aa;
+    --card-preview-border: rgba(161, 161, 170, 0.2);
+    --card-preview-muted: rgba(228, 228, 231, 0.5);
+  }
+
+  /* Rose Gold Elite (Ultra-Luxury) */
+  [data-theme="rose-gold-elite"] {
+    --card-preview-bg: #2a0a12;
+    --card-preview-text: #ffe4e6;
+    --card-preview-accent: #fb7185;
+    /* Rose tone */
+    --card-preview-border: rgba(251, 113, 133, 0.3);
+    --card-preview-muted: rgba(255, 228, 230, 0.6);
+  }
+
+  /* Royal Marble (Ultra-Luxury) */
+  [data-theme="royal-marble"] {
+    --card-preview-bg: #fafafa;
+    --card-preview-text: #0f172a;
+    --card-preview-accent: #d4af37;
+    /* Gold accent */
+    --card-preview-border: rgba(212, 175, 55, 0.4);
+    --card-preview-muted: rgba(15, 23, 42, 0.5);
   }
 
   /* Light mode for those who prefer it */
@@ -337,6 +420,7 @@
 }
 
 @layer components {
+
   /* Editorial heading styles */
   .heading-display {
     font-family: var(--font-display);
@@ -464,6 +548,7 @@
 }
 
 @layer utilities {
+
   /* Smooth focus states for accessibility */
   .focus-ring {
     @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background;

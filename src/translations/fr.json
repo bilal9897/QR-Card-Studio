@@ -1,0 +1,25 @@
+{
+    "app": {
+        "title": "Studio Carte QR",
+        "subtitle": "Créez des cartes d'avis premium"
+    },
+    "nav": {
+        "create": "Créer",
+        "saved": "Sauvegardés",
+        "gallery": "Galerie",
+        "about": "À propos"
+    },
+    "generator": {
+        "hero": {
+            "title": "Créez des Cartes d'Avis Premium",
+            "subtitle": "Concevez des cartes de feedback premium pour votre entreprise. Prêtes à imprimer, professionnelles et conçues pour inspirer confiance."
+        },
+        "panels": {
+            "templates": "Modèles",
+            "format": "Format et Taille",
+            "colors": "Couleurs",
+            "branding": "Marque",
+            "content": "Contenu"
+        }
+    }
+}

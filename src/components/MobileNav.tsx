@@ -33,14 +33,14 @@ export default function MobileNav({ onAboutClick }: MobileNavProps) {
       {isOpen && (
         <div className="fixed inset-0 z-50">
           {/* Backdrop */}
-          <div 
+          <div
             className="absolute inset-0 bg-background/80 backdrop-blur-sm"
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
-          
+
           {/* Menu Panel */}
-          <div 
+          <div
             className="absolute right-0 top-0 h-full w-[280px] bg-card border-l border-border shadow-2xl animate-in slide-in-from-right duration-300"
             role="dialog"
             aria-modal="true"
@@ -75,11 +75,11 @@ export default function MobileNav({ onAboutClick }: MobileNavProps) {
                 </li>
                 <li>
                   <a
-                    href="#gallery"
+                    href="/templates"
                     onClick={handleNavClick}
                     className="block px-4 py-3 text-foreground hover:bg-secondary/50 transition-colors focus-ring"
                   >
-                    Stand Gallery
+                    Templates Gallery
                   </a>
                 </li>
                 <li>

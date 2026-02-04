@@ -1,0 +1,25 @@
+{
+    "app": {
+        "title": "QR Card Studio",
+        "subtitle": "Create premium review cards"
+    },
+    "nav": {
+        "create": "Create",
+        "saved": "Saved",
+        "gallery": "Gallery",
+        "about": "About"
+    },
+    "generator": {
+        "hero": {
+            "title": "Create Premium Review Cards",
+            "subtitle": "Design premium feedback cards for your business. Print-ready, professional, and crafted to inspire trust."
+        },
+        "panels": {
+            "templates": "Templates",
+            "format": "Format & Size",
+            "colors": "Colors",
+            "branding": "Branding",
+            "content": "Content"
+        }
+    }
+}
