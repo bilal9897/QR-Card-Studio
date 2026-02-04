@@ -43,6 +43,56 @@ export default function Debug() {
             </div>
 
             <Link to="/" className="mt-8 inline-block text-blue-400 hover:underline">&larr; Back to Home</Link>
+
+            <div className="mt-12 border-t border-gray-700 pt-8">
+                <h2 className="text-xl mb-4 text-yellow-500">🔥 Database Connection Test</h2>
+                <DatabaseTester />
+            </div>
+        </div>
+    );
+}
+
+import { useState } from "react";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+
+function DatabaseTester() {
+    const [status, setStatus] = useState<string>("Idle");
+    const [error, setError] = useState<string | null>(null);
+
+    const runTest = async () => {
+        setStatus("Testing...");
+        setError(null);
+        try {
+            await addDoc(collection(db, "debug_tests"), {
+                timestamp: new Date(),
+                userAgent: navigator.userAgent
+            });
+            setStatus("✅ SUCCESS! Written to 'debug_tests' collection.");
+        } catch (e: any) {
+            console.error(e);
+            setStatus("❌ FAILED");
+            setError(e.message || JSON.stringify(e));
+        }
+    };
+
+    return (
+        <div className="bg-gray-900 p-6 rounded-lg border border-gray-700 max-w-2xl">
+            <button
+                onClick={runTest}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-bold transition-colors"
+            >
+                Test Write to Database
+            </button>
+
+            <div className="mt-4">
+                <p className="font-bold">Status: <span className={status.includes("SUCCESS") ? "text-green-400" : status.includes("FAILED") ? "text-red-400" : "text-gray-400"}>{status}</span></p>
+                {error && (
+                    <div className="mt-2 p-3 bg-red-900/50 text-red-200 rounded text-sm font-mono overflow-auto">
+                        {error}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
