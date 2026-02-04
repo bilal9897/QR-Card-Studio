@@ -506,7 +506,9 @@ export default function Generator() {
 
           </nav>
           <div className="flex items-center gap-2">
-            <LanguageSelector />
+            <div className="hidden md:block">
+              <LanguageSelector />
+            </div>
             <PWAInstallButton />
             <OfflineBadge />
             <ThemeToggle />
